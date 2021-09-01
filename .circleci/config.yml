@@ -36,7 +36,8 @@ version: 2.1
 workflows:
   deployment:
     jobs:
-      - aws-eks/create-cluster:
+      - install-dependencies
+#      - aws-eks/create-cluster:
           cluster-name: DiptiAWSCluster
 #      - create-deployment:
 #          cluster-name: DiptiAWSCluster
