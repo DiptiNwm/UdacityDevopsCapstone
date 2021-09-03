@@ -31,10 +31,10 @@ jobs:
           name: Build, tag and push docker image to docker.io
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
-            docker build -t dipticapstoneimg:${CIRCLE_WORKFLOW_ID:0:7} .
-            docker push dipticapstoneimg:${CIRCLE_WORKFLOW_ID:0:7}
-            docker tag dipticapstoneimg:${CIRCLE_WORKFLOW_ID:0:7} dipticapstoneimg:latest
-            docker push dipticapstoneimg:latest
+            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
+            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
+            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
+            docker push diptinwm/dipticapstone:latest
   
   create-deployment:
     executor: aws-eks/python3
@@ -93,7 +93,7 @@ workflows:
             - aws-eks/create-cluster
       - aws-eks/update-container-image:
           cluster-name: dipticapstone
-          container-image-updates: dipticapstone=dipticapstoneimg
+          container-image-updates: dipticapstone=diptinwm/dipticapstone
           post-steps:
               - kubernetes/delete-resource:
                   resource-names: dipticapstone
