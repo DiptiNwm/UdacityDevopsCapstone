@@ -18,6 +18,9 @@ install:
 	# Install hadolint
         wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.6.1/hadolint-Linux-x86_64 &&\
         chmod +x /bin/hadolint
+	
+	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+	sudo mv /tmp/eksctl /usr/local/bin
 
 test:
 	# Additional, optional, tests could go here
