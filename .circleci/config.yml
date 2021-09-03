@@ -22,7 +22,6 @@ jobs:
             python3 -m venv virtualenv
             . virtualenv/bin/activate
             make install
-            make lint
   build:
     machine: true
     working_directory: ~/app
@@ -86,6 +85,8 @@ workflows:
             - "lint-app"
       - aws-eks/create-cluster:
           cluster-name: dipticapstone
+          requires:
+            - build
       - create-deployment:
           cluster-name: dipticapstone
           requires:
