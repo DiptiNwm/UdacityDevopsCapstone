@@ -94,14 +94,17 @@ workflows:
             - "lint-app"
       - aws-eks/create-cluster:
           cluster-name: dipticapstone
+          aws-region: us-east-2 
           requires:
             - build
       - create-deployment:
           cluster-name: dipticapstone
+          aws-region: us-east-2 
           requires:
             - aws-eks/create-cluster
       - aws-eks/update-container-image:
           cluster-name: dipticapstone
+          aws-region: us-east-2 
           container-image-updates: dipticapstone=diptinwm/dipticapstone
           post-steps:
               - kubernetes/delete-resource:
@@ -114,9 +117,11 @@ workflows:
           resource-name: deployment/dipticapstone
       - test-cluster:
           cluster-name: dipticapstone
+          aws-region: us-east-2 
           requires:
             - aws-eks/update-container-image
       - aws-eks/delete-cluster:
           cluster-name: dipticapstone
+          aws-region: us-east-2 
           requires:
             - test-cluster
