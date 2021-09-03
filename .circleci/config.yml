@@ -99,7 +99,6 @@ workflows:
             - build
       - create-deployment:
           cluster-name: dipticapstone
-          aws-region: us-east-2 
           requires:
             - aws-eks/create-cluster
       - aws-eks/update-container-image:
