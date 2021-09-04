@@ -45,10 +45,10 @@ jobs:
           name: Build, tag and push docker image to docker.io
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
-#            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
-#            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
-#            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
-#            docker push diptinwm/dipticapstone:latest
+            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
+            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
+            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
+            docker push diptinwm/dipticapstone:latest
   
   create-deployment:
     executor: aws-eks/python3
@@ -100,34 +100,34 @@ workflows:
       - build:
           requires:
             - "lint-app"
-#      - aws-eks/create-cluster:
-#          cluster-name: dipticapstone
-#          aws-region: us-east-2 
-#          requires:
-#            - build
-#      - create-deployment:
-#          cluster-name: dipticapstone
-#          requires:
-#            - aws-eks/create-cluster
-#      - aws-eks/update-container-image:
-#          cluster-name: dipticapstone
-#          aws-region: us-east-2 
-#          container-image-updates: dipticapstone=diptinwm/dipticapstone
-#          post-steps:
-#              - kubernetes/delete-resource:
-#                  resource-names: dipticapstone
-#                  resource-types: deployment
-#                  wait: true
-#          record: true
-#          requires:
-#              - create-deployment
-#          resource-name: deployment/dipticapstone
-#      - test-cluster:
-#          cluster-name: dipticapstone
-#          requires:
-#            - aws-eks/update-container-image
-#      - aws-eks/delete-cluster:
-#          cluster-name: dipticapstone
-#          aws-region: us-east-2 
-#          requires:
-#            - test-cluster
+      - aws-eks/create-cluster:
+          cluster-name: dipticapstone
+          aws-region: us-east-2 
+          requires:
+            - build
+      - create-deployment:
+          cluster-name: dipticapstone
+          requires:
+            - aws-eks/create-cluster
+      - aws-eks/update-container-image:
+          cluster-name: dipticapstone
+          aws-region: us-east-2 
+          container-image-updates: dipticapstone=diptinwm/dipticapstone
+          post-steps:
+              - kubernetes/delete-resource:
+                  resource-names: dipticapstone
+                  resource-types: deployment
+                  wait: true
+          record: true
+          requires:
+              - create-deployment
+          resource-name: deployment/dipticapstone
+      - test-cluster:
+          cluster-name: dipticapstone
+          requires:
+            - aws-eks/update-container-image
+      - aws-eks/delete-cluster:
+          cluster-name: dipticapstone
+          aws-region: us-east-2 
+          requires:
+            - test-cluster
