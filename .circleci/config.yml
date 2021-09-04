@@ -98,7 +98,6 @@ workflows:
       - aws-eks/create-cluster:
           cluster-name: DiptiAWSCluster
           aws-region: us-east-2 
-          node-private-networking: false
           requires:
             - build
       - create-deployment:
