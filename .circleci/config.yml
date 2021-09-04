@@ -40,10 +40,10 @@ jobs:
           name: Build, tag and push docker image to docker.io
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
-            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
-            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
-            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
-            docker push diptinwm/dipticapstone:latest
+#            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
+#            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
+#            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
+#            docker push diptinwm/dipticapstone:latest
   
   create-deployment:
     executor: aws-eks/python3
@@ -61,7 +61,7 @@ jobs:
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: appdeployment.yml
+          resource-file-path: CloudFormation/appdeployment.yml
           resource-name: deployment/dipticapstone
 
   test-cluster:
@@ -95,11 +95,11 @@ workflows:
       - build:
           requires:
             - "lint-app"
-      - aws-eks/create-cluster:
-          cluster-name: dipticapstone
-          aws-region: us-east-2 
-          requires:
-            - build
+#      - aws-eks/create-cluster:
+#          cluster-name: dipticapstone
+#          aws-region: us-east-2 
+#          requires:
+#            - build
       - create-deployment:
           cluster-name: dipticapstone
           requires:
