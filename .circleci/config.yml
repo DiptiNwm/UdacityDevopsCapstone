@@ -40,17 +40,17 @@ jobs:
           name: Build, tag and push docker image to docker.io
           command: |
             docker login -u ${DOCKER_USER} -p ${DOCKER_PWD}
-#            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
-#            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
-#            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
-#            docker push diptinwm/dipticapstone:latest
+            docker build -t diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} .
+            docker push diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7}
+            docker tag diptinwm/dipticapstone:${CIRCLE_WORKFLOW_ID:0:7} diptinwm/dipticapstone:latest
+            docker push diptinwm/dipticapstone:latest
   
   create-deployment:
     executor: aws-eks/python3
     parameters:
       cluster-name:
         description: |
-          DiptiAWSCluster
+          dipticapstone
         type: string
     steps:
       - checkout
@@ -69,7 +69,7 @@ jobs:
     parameters:
       cluster-name:
         description: |
-          DiptiAWSCluster
+          dipticapstone
         type: string
     steps:
       - kubernetes/install
@@ -96,16 +96,16 @@ workflows:
           requires:
             - "lint-app"
       - aws-eks/create-cluster:
-          cluster-name: DiptiAWSCluster
+          cluster-name: dipticapstone
           aws-region: us-east-2 
           requires:
             - build
       - create-deployment:
-          cluster-name: DiptiAWSCluster
+          cluster-name: dipticapstone
           requires:
             - aws-eks/create-cluster
       - aws-eks/update-container-image:
-          cluster-name: DiptiAWSCluster
+          cluster-name: dipticapstone
           aws-region: us-east-2 
           container-image-updates: dipticapstone=diptinwm/dipticapstone
           post-steps:
@@ -118,7 +118,7 @@ workflows:
               - create-deployment
           resource-name: deployment/dipticapstone
       - test-cluster:
-          cluster-name: DiptiAWSCluster
+          cluster-name: dipticapstone
           requires:
             - aws-eks/update-container-image
       - aws-eks/delete-cluster:
